@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b4a96752dc184a4c80f9b632b00642f, type: 3}
+  m_Name: EnemyList
+  m_EditorClassIdentifier: 
+  enemyItems:
+  - name: Small Slime
+    health: 30
+    sprite: {fileID: 21300000, guid: a0ca6a037a2cba54f9de3cc4072eb0e5, type: 3}
+    damage: 5
+  - name: Large Slime
+    health: 60
+    sprite: {fileID: 21300000, guid: f7594f4b975ddd14d80a402405d37658, type: 3}
+    damage: 10
+  - name: Goblin
+    health: 40
+    sprite: {fileID: 21300000, guid: f6e2f90713e51d54eb6a032d20c34498, type: 3}
+    damage: 8
+  - name: Goblin Warrior
+    health: 80
+    sprite: {fileID: 21300000, guid: 3807c41c7d7dbb14f9251dadf345713b, type: 3}
+    damage: 16
+  - name: Orc
+    health: 50
+    sprite: {fileID: 21300000, guid: 1f27e1a7f1b8e874c8cabe09f9f80993, type: 3}
+    damage: 10
+  - name: Orc Warrior
+    health: 100
+    sprite: {fileID: 21300000, guid: a813df7d10ed55045a5c2ef7402f9de3, type: 3}
+    damage: 20

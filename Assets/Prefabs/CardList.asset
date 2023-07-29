@@ -1,0 +1,171 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41d48227192a57345bbdf325cf5afa90, type: 3}
+  m_Name: CardList
+  m_EditorClassIdentifier: 
+  cardItems:
+  - shape: spade
+    sprite: {fileID: 21300000, guid: a622787e07dc160499842ed80b159523, type: 3}
+    value: 1
+  - shape: spade
+    sprite: {fileID: 21300000, guid: 7ce3b495136ae6848b6acfda58faaea9, type: 3}
+    value: 2
+  - shape: spade
+    sprite: {fileID: 21300000, guid: d7f7ddcfa4e3a9642ae274cda2bac719, type: 3}
+    value: 3
+  - shape: spade
+    sprite: {fileID: 21300000, guid: 7bd81cbf1cc83f949b3b7731a0d57720, type: 3}
+    value: 4
+  - shape: spade
+    sprite: {fileID: 21300000, guid: 71e1b37f164239340842d82ba19602de, type: 3}
+    value: 5
+  - shape: spade
+    sprite: {fileID: 21300000, guid: afdf5702537ec08499fc91d03afb0c18, type: 3}
+    value: 6
+  - shape: spade
+    sprite: {fileID: 21300000, guid: 404ac9ffc401fed4a97f7c456623dfce, type: 3}
+    value: 7
+  - shape: spade
+    sprite: {fileID: 21300000, guid: 701454c7b02914045b170dd72ab284cd, type: 3}
+    value: 8
+  - shape: spade
+    sprite: {fileID: 21300000, guid: 61cddce1092685b48a7bbc1dc5a0d330, type: 3}
+    value: 9
+  - shape: spade
+    sprite: {fileID: 21300000, guid: 29742734473a82b4c9676e89d1d2d807, type: 3}
+    value: 10
+  - shape: spade
+    sprite: {fileID: 21300000, guid: 08956a485d735c04c85c36cf9d47dc26, type: 3}
+    value: 11
+  - shape: spade
+    sprite: {fileID: 21300000, guid: 2e9f731a9cf63234d8c6a4a58a8ba900, type: 3}
+    value: 12
+  - shape: spade
+    sprite: {fileID: 21300000, guid: 5d8250e5a3a48384f9b379819941e795, type: 3}
+    value: 13
+  - shape: diamond
+    sprite: {fileID: 21300000, guid: af6427ce2350e754ea4f2acbff154ef7, type: 3}
+    value: 1
+  - shape: diamond
+    sprite: {fileID: 21300000, guid: 3065513f9383af948826dc026d9beaee, type: 3}
+    value: 2
+  - shape: diamond
+    sprite: {fileID: 21300000, guid: a6b19ca8d8ba95e429b4c87cfefb9306, type: 3}
+    value: 3
+  - shape: diamond
+    sprite: {fileID: 21300000, guid: edfea37939c41b14aa6d4171c7bacd86, type: 3}
+    value: 4
+  - shape: diamond
+    sprite: {fileID: 21300000, guid: 493cb698aa5930b488818b80feadae84, type: 3}
+    value: 5
+  - shape: diamond
+    sprite: {fileID: 21300000, guid: 9e7763cf9f9a99d43951ffd859fcee24, type: 3}
+    value: 6
+  - shape: diamond
+    sprite: {fileID: 21300000, guid: 97d038b3bd060a04ba7e5d485d740457, type: 3}
+    value: 7
+  - shape: diamond
+    sprite: {fileID: 21300000, guid: e48941e314ab0f040bc883a3d5be8a7c, type: 3}
+    value: 8
+  - shape: diamond
+    sprite: {fileID: 21300000, guid: e8c122d65b47da745b5930dabf5b2849, type: 3}
+    value: 9
+  - shape: diamond
+    sprite: {fileID: 21300000, guid: 69f8cc6b6c943a444bcc2aadf3a8373d, type: 3}
+    value: 10
+  - shape: diamond
+    sprite: {fileID: 21300000, guid: c8921af199560e647b3a4365a57f0b98, type: 3}
+    value: 11
+  - shape: diamond
+    sprite: {fileID: 21300000, guid: 338029149ce67bc40955a174e75ee4b0, type: 3}
+    value: 12
+  - shape: diamond
+    sprite: {fileID: 21300000, guid: f634c69f620e2cc4ba112a9e2eee958b, type: 3}
+    value: 13
+  - shape: heart
+    sprite: {fileID: 21300000, guid: 7585db0ca21f24d40aa3e4866e7aa7c5, type: 3}
+    value: 1
+  - shape: heart
+    sprite: {fileID: 21300000, guid: e8b28dfd817c6e44c87991dc144ac5dc, type: 3}
+    value: 2
+  - shape: heart
+    sprite: {fileID: 21300000, guid: 7ddab2a0ee3c3c64d867d5bbc9634e5a, type: 3}
+    value: 3
+  - shape: heart
+    sprite: {fileID: 21300000, guid: d19ee5c1a2396dc469dd372cbdaa927b, type: 3}
+    value: 4
+  - shape: heart
+    sprite: {fileID: 21300000, guid: 16010624e16100b499dfca05d9ee5dee, type: 3}
+    value: 5
+  - shape: heart
+    sprite: {fileID: 21300000, guid: 7bafa40a8d8f4364daff87c4870a1587, type: 3}
+    value: 6
+  - shape: heart
+    sprite: {fileID: 21300000, guid: 65016e168b11afc42825660868c8f500, type: 3}
+    value: 7
+  - shape: heart
+    sprite: {fileID: 21300000, guid: d5b99a0d7f8685b449ed1a029eb1ae85, type: 3}
+    value: 8
+  - shape: heart
+    sprite: {fileID: 21300000, guid: 18f054a8a83116643b18b1f3385c78f2, type: 3}
+    value: 9
+  - shape: heart
+    sprite: {fileID: 21300000, guid: cf561487236148847baf1a585a17bc0d, type: 3}
+    value: 10
+  - shape: heart
+    sprite: {fileID: 21300000, guid: 4205765ff21fcec4eb691385db09b80a, type: 3}
+    value: 11
+  - shape: heart
+    sprite: {fileID: 21300000, guid: 258a6376f980cbc429c6866f48fc1231, type: 3}
+    value: 12
+  - shape: heart
+    sprite: {fileID: 21300000, guid: 33ad2b3c573a18744a4f4166c2559888, type: 3}
+    value: 13
+  - shape: clover
+    sprite: {fileID: 21300000, guid: 5b2cbe9eede30ec458420ba95cc78e9b, type: 3}
+    value: 1
+  - shape: clover
+    sprite: {fileID: 21300000, guid: af436583469a9cb4792237e41429d1eb, type: 3}
+    value: 2
+  - shape: clover
+    sprite: {fileID: 21300000, guid: 0e27252d2bfaeee41a056c691f8aea90, type: 3}
+    value: 3
+  - shape: clover
+    sprite: {fileID: 21300000, guid: 9b436a2714cd09d48b9d678c67d45281, type: 3}
+    value: 4
+  - shape: clover
+    sprite: {fileID: 21300000, guid: f011b7794eb2b7e4a8196d5e7b04f221, type: 3}
+    value: 5
+  - shape: clover
+    sprite: {fileID: 21300000, guid: 536587424d0f0344bb062cc1624c6ba7, type: 3}
+    value: 6
+  - shape: clover
+    sprite: {fileID: 21300000, guid: 8d9f2513eb2320b4ebf673d710559bec, type: 3}
+    value: 7
+  - shape: clover
+    sprite: {fileID: 21300000, guid: 53fe05833952fff4983a60ae6093de76, type: 3}
+    value: 8
+  - shape: clover
+    sprite: {fileID: 21300000, guid: 306376566830ca04f80b8d2543049bf2, type: 3}
+    value: 9
+  - shape: clover
+    sprite: {fileID: 21300000, guid: d024ddff5a69403409fabed6fe0ee24b, type: 3}
+    value: 10
+  - shape: clover
+    sprite: {fileID: 21300000, guid: 08956a485d735c04c85c36cf9d47dc26, type: 3}
+    value: 11
+  - shape: clover
+    sprite: {fileID: 21300000, guid: be7f8680681c71648af1acd974a33749, type: 3}
+    value: 12
+  - shape: clover
+    sprite: {fileID: 21300000, guid: 8c98f30a475dd824a9776854327b51ee, type: 3}
+    value: 13
