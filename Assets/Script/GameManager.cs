@@ -10,13 +10,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Inst { get; private set; }
     void Awake() => Inst = this;
-    [SerializeField] NotificationPanel notificationPanel;
     [SerializeField] GameObject cardInfo;
     [SerializeField] GameObject cardChange;
     [SerializeField] GameObject turnEnd;
     [SerializeField] GameObject upTitle;
     [SerializeField] GameObject hp;
- 
+
     [SerializeField] SpriteRenderer background;
     [SerializeField] List<Sprite> BGList;
 
@@ -193,13 +192,13 @@ public class GameManager : MonoBehaviour
 
         }
         StartCoroutine(CardManager.Inst.SpawnEnemys(enemys));
-        StartCoroutine(CardManager.Inst.StartBattleCo(7, 5));
+        StartCoroutine(CardManager.Inst.StartBattleCo());
         yield return null;
     }
-    public IEnumerator SelectEquipment()
+    public IEnumerator SelectEquipment(int num)
     {
-        OnActive();
-        StartCoroutine(CardManager.Inst.SpawnEquipment());
+        OffActive();
+        StartCoroutine(CardManager.Inst.SpawnEquipment(num));
         yield return null;
     }
     public IEnumerator SelectRoad()

@@ -382,7 +382,6 @@
 "Assets/Script/Card.cs"
 "Assets/Script/CardList.cs"
 "Assets/Script/CardManager.cs"
-"Assets/Script/DialogSystem.cs"
 "Assets/Script/Enemy.cs"
 "Assets/Script/EnemyList.cs"
 "Assets/Script/Equipment.cs"

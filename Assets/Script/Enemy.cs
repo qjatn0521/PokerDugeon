@@ -7,25 +7,26 @@ using Random = UnityEngine.Random;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] SpriteRenderer enemy;
-    [SerializeField] GameObject enemyBack;
-    [SerializeField] GameObject enemySelect;
-    [SerializeField] TextMeshPro textHP;
-    [SerializeField] TextMeshPro textDamage;
-    public EnemyItem enemyItem;
-    public PRS originPRS;
-    public int enemyHP;
-    public int enemyDamage;
+    [SerializeField] private SpriteRenderer enemy;
+    [SerializeField] private GameObject enemyBack;
+    [SerializeField] private GameObject enemySelect;
+    [SerializeField] private TextMeshPro textHP;
+    [SerializeField] private TextMeshPro textDamage;
+    private EnemyItem enemyItem;
+    private int enemyHP;
+    private int enemyDamage;
     private Transform removePoint;
-    bool select = false;
+    private bool select = false;
     private bool die = false;
-    public void Setup(EnemyItem enemyItem, Transform removePoint)
+
+    public PRS originPRS;
+    public void setup(EnemyItem theEnemyItem, Transform theRemovePoint)
     {
-        this.enemyItem = enemyItem;
-        enemy.sprite = enemyItem.sprite;
-        enemyHP = enemyItem.health;
-        enemyDamage = enemyItem.damage;
-        this.removePoint = removePoint;
+        this.enemyItem = theEnemyItem;
+        enemy.sprite = theEnemyItem.sprite;
+        enemyHP = theEnemyItem.health;
+        enemyDamage = theEnemyItem.damage;
+        this.removePoint = theRemovePoint;
 
         int rand = Random.Range(-enemyHP / 10, enemyHP / 10);
         enemyHP += rand;
@@ -38,19 +39,19 @@ public class Enemy : MonoBehaviour
         
     }
     public int getHP() { return enemyHP; }
-    public bool TakeDamage(int damage)
+    public bool takeDamage(int theDamage)
     {
-        enemyHP -= damage;
+        enemyHP -= theDamage;
         if(enemyHP <= 0)
         {
-            DieEnemy();
+            dieEnemy();
             return true;
         }
         textHP.text = enemyHP + "";
         return false;
 
     }
-    public int Attack()
+    public int attack()
     {
         Vector3 targetScale = Vector3.one * 1.5f;
         transform.DOScale(targetScale, 0.3f)
@@ -63,14 +64,14 @@ public class Enemy : MonoBehaviour
         return enemyDamage;
 
     }
-    public void DieEnemy()
+    private void dieEnemy()
     {
         die = true;
         // 투명해지는 애니메이션을 실행합니다.
         enemy.material.DOFade(0f, 0.5f).OnComplete(() => Destroy(gameObject));
     }
 
-    public void MoveTransform(PRS prs, bool useDotween, float dotweenTime = 0)
+    public void moveTransform(PRS prs, bool useDotween, float dotweenTime = 0)
     {
         if (useDotween)
         {
@@ -111,9 +112,9 @@ public class Enemy : MonoBehaviour
     {
         CardManager.Inst.EnemyMouseExit(this);
     }
-    void OnMouseDown()
+    void OnMouseUp()
     {
         if(!die)
-            CardManager.Inst.EnemyMouseDown(this);
+            CardManager.Inst.EnemyMouseUp(this);
     }
 }

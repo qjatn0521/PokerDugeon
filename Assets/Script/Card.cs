@@ -10,13 +10,13 @@ public class Card : MonoBehaviour
     private Transform removePoint;
     public PRS originPRS;
 
-    public void Setup(CardItem cardItem, Transform removePoint)
+    public void setup(CardItem theCardItem, Transform theRemovePoint)
     {
-        this.cardItem = cardItem;
-        this.removePoint = removePoint;
-        card.sprite = cardItem.sprite;
+        this.cardItem = theCardItem;
+        this.removePoint = theRemovePoint;
+        card.sprite = theCardItem.sprite;
     }
-    public void DieCard()
+    public void dieCard()
     {
         Quaternion targetRotation = Quaternion.Euler(0f, 0f, 45f);
 
@@ -26,11 +26,11 @@ public class Card : MonoBehaviour
             .Join(transform.DOLocalMove(removePoint.position, 0.8f))
             .OnComplete(() => Destroy(gameObject));
     }
-    public CardItem GetCard()
+    public CardItem getCard()
     {
         return cardItem;
     }
-    public void MoveTransform(PRS prs, bool useDotween, float dotweenTime = 0)
+    public void moveTransform(PRS prs, bool useDotween, float dotweenTime = 0)
     {
         if(useDotween)
         {

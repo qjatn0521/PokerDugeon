@@ -5,16 +5,19 @@ using UnityEngine;
 [System.Serializable]
 public class EquipmentItem
 {
-    public string name;
     public Sprite image;
+    public Sprite image2;
+    public int grade;
     public int plusATK;
     public int plusDEF;
-    public int plusHP;
     public int option;
     
 }
 [CreateAssetMenu(fileName = "EquipmentList", menuName = "Scriptable Object/EquipmentList")]
 public class EquipmentList : ScriptableObject
 {
-    public EquipmentItem[] equipmentItems;
+    public EquipmentItem[] commonItems;
+    public EquipmentItem[] rareItems;
+    public EquipmentItem[] epicItems;
+    public EquipmentItem[] legendItems;
 }

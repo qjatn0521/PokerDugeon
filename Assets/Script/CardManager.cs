@@ -21,7 +21,6 @@ public class CardManager : MonoBehaviour
     [SerializeField] Transform myCardRight;
     [SerializeField] List<Card> myCards;
 
-    
     [SerializeField] GameObject enemyPrefab;
     [SerializeField] Transform enemySpawnPoint;
     [SerializeField] Transform enemyRemovePoint;
@@ -34,7 +33,7 @@ public class CardManager : MonoBehaviour
     [SerializeField] GameObject roadPrefab;
     [SerializeField] List<Road> myRoads;
 
-    [SerializeField] EquipmentList equipmentList;
+    [SerializeField] EquipmentList equipmentItems;
     [SerializeField] GameObject equipPrefab;
     [SerializeField] List<Equipment> myEquips;
 
@@ -54,7 +53,10 @@ public class CardManager : MonoBehaviour
     List<CardItem> cardBuffer = new List<CardItem>(52);
     List<EnemyItem> enemyBuffer = new List<EnemyItem>(5); //현존 몬스터 수
     List<RoadItem> roadBuffer = new List<RoadItem>();
-    List<EquipmentItem> equipBuffer = new List<EquipmentItem>();
+    List<EquipmentItem> commonBuffer = new List<EquipmentItem>();
+    List<EquipmentItem> rareBuffer = new List<EquipmentItem>();
+    List<EquipmentItem> epicBuffer = new List<EquipmentItem>();
+    List<EquipmentItem> legendBuffer = new List<EquipmentItem>();
 
 
     [SerializeField] GameObject RoadButton;
@@ -68,8 +70,6 @@ public class CardManager : MonoBehaviour
     bool isMyCardDrag= false;
     bool onMyCardArea;
     int cardNum;
-    int fixedChangeNum;
-    int changeNum;
     
     int damage;
     int maxSelect;
@@ -81,8 +81,7 @@ public class CardManager : MonoBehaviour
 
     void Start()
     {
-        
-
+        player.resetChange();
         roadList.roadItems[0].Init(0, 1, 0);
         roadList.roadItems[1].Init(1, 10, 0);
         roadList.roadItems[2].Init(2, 5, 0);
@@ -110,38 +109,29 @@ public class CardManager : MonoBehaviour
             T item = items[i];
             buffer.Add(item);
         }
-        for (int i = 0; i < buffer.Count; i++)
-        {
-            int rand = Random.Range(i, buffer.Count);
-            T tmp = buffer[i];
-            buffer[i] = buffer[rand];
-            buffer[rand] = tmp;
-        }
+        Shuffle(buffer);
 
     }
     public void ChangeCard(Card card)
     {
         
-        if (changeNum <= 0)
+        if (player.changeNum <= 0)
         {
             return;
         }
-        changeNum--;
-        textCardChange.text = changeNum + textCardChange.text.Substring(textCardChange.text.IndexOf('/')).Trim();
+        player.useChange();
         SetECardState(0);
         myCards.Remove(card);
         GameObject.Destroy(card.gameObject);
         StartCoroutine("GoCardAlignment",0f);
         GetCardDamage();
     }
-    public IEnumerator StartBattleCo(int cardNum, int changeNum)
+    public IEnumerator StartBattleCo()
     {
-        fixedChangeNum = changeNum;
-        textCardChange.text = changeNum + "/" + changeNum;
+        player.resetChange();
         SetECardState(0);       //드래그 가능한 상태
         SetupBuffer(cardBuffer,cardList.cardItems);      
-        this.cardNum = cardNum; //카드 개수
-        this.changeNum = changeNum;
+        this.cardNum = player.cardNum; //카드 개수
         SetCard();              //카드 리스트에 cardNum만큼 넣기
         GetCardDamage();
         yield return null;
@@ -192,10 +182,13 @@ public class CardManager : MonoBehaviour
         SetEnemy();
         yield return null;
     }
-    public IEnumerator SpawnEquipment()
+    public IEnumerator SpawnEquipment(int num)
     {
-        SetupBuffer(equipBuffer, equipmentList.equipmentItems);
-        SetEquipment();
+        SetupBuffer(commonBuffer, equipmentItems.commonItems);
+        SetupBuffer(rareBuffer, equipmentItems.rareItems);
+        SetupBuffer(epicBuffer, equipmentItems.epicItems);
+        SetupBuffer(legendBuffer, equipmentItems.legendItems);
+        SetEquipment(num);
         yield return null;
     }
     void Update()
@@ -208,13 +201,13 @@ public class CardManager : MonoBehaviour
    
     private void SetCard()
     {
-        List<CardItem> tmp = PopList(cardNum+changeNum,cardBuffer);   //총 카드 = cardNum + changeNum
-        for (int i=0;i< cardNum + changeNum; i++)
+        List<CardItem> tmp = PopList(player.cardNum+player.changeNum,cardBuffer);   //총 카드 = cardNum + changeNum
+        for (int i=0;i< player.cardNum + player.changeNum; i++)
         {
             var cardObject = Instantiate(cardPrefab, cardSpawnPoint.position, Utils.QI);
             var card = cardObject.GetComponent<Card>();
             myCards.Add(card);
-            card.Setup(tmp[i],cardRemovePoint);
+            card.setup(tmp[i],cardRemovePoint);
         }
         StartCoroutine("GoCardAlignment",0.2f);
         SetOriginOrder();
@@ -228,7 +221,7 @@ public class CardManager : MonoBehaviour
             var enemyObject = Instantiate(enemyPrefab, enemySpawnPoint.position, Utils.QI);
             var enemy = enemyObject.GetComponent<Enemy>();
             myEnemys.Add(enemy);
-            enemy.Setup(tmp[i], enemyRemovePoint);
+            enemy.setup(tmp[i], enemyRemovePoint);
         }
         int[] pos = new int[] {2};
         if(numEnemy == 1) pos = new int[] {2};
@@ -242,7 +235,7 @@ public class CardManager : MonoBehaviour
     }
     private void SetRoad()
     {
-        List<RoadItem> tmp = PopList(5, roadBuffer);   //총 카드 = cardNum + changeNum
+        List<RoadItem> tmp = PopList(5, roadBuffer); 
         for (int i = 0; i < 5; i++)
         {
             var roadObject = Instantiate(roadPrefab, enemySpawnPoint.position, Utils.QI);
@@ -252,17 +245,79 @@ public class CardManager : MonoBehaviour
         }
         StartCoroutine("GoRoadAlignment");
     }
-    private void SetEquipment()
+    private void SetEquipment(int num)
     {
-        List<EquipmentItem> tmp = PopList(3, equipBuffer);   //총 카드 = cardNum + changeNum
-        for (int i = 0; i < 3; i++)
+        int commonPro=80;
+        int rarePro=100;
+        int epicPro=101;
+        int legendPro=101;
+        if (num == 2)
+        {
+            commonPro = 40;
+            rarePro = 80;
+            epicPro = 100;
+            legendPro = 101;
+        }
+        else if (num == 3)
+        {
+            commonPro = 0;
+            rarePro = 60;
+            epicPro = 100;
+            legendPro = 101;
+        }
+        else if (num == 4)
+        {
+            commonPro = 0;
+            rarePro = 20;
+            epicPro = 80;
+            legendPro = 100;
+        }
+        else if (num == 5)
+        {
+            commonPro = 0;
+            rarePro = 0;
+            epicPro = 40;
+            legendPro = 100;
+        }
+        int commonNum=0;
+        int rareNum=0;
+        int epicNum=0;
+        int legendNum=0;
+        for (int i=0;i < player.rewardNum;i++)
+        {
+            int rand = Random.Range(1, 101);
+            if (rand <= commonPro) {
+                commonNum++;
+            } else if (rand <= rarePro) {
+                rareNum++;
+            } else if (rand <= epicPro) {
+                epicNum++;
+            } else if(rand <= legendPro) {
+                legendNum++;
+            }
+        }
+        List<EquipmentItem> combinedList = new List<EquipmentItem>();
+
+        combinedList.AddRange(PopList(commonNum, commonBuffer));
+        combinedList.AddRange(PopList(rareNum, rareBuffer));
+        combinedList.AddRange(PopList(epicNum, epicBuffer));
+        combinedList.AddRange(PopList(legendNum, legendBuffer));
+        Shuffle(combinedList);
+
+        for (int i = 0; i < player.rewardNum; i++)
         {
             var equipObject = Instantiate(equipPrefab, enemySpawnPoint.position, Utils.QI);
             var equip = equipObject.GetComponent<Equipment>();
             myEquips.Add(equip);
-            equip.Setup(tmp[i]);
+            equip.Setup(combinedList[i]);
         }
-        StartCoroutine("GoEquipAlignment");
+        int[] pos = new int[] { 2 };
+        if (player.rewardNum == 1) pos = new int[] { 2 };
+        else if (player.rewardNum == 2) pos = new int[] { 1, 3 };
+        else if (player.rewardNum == 3) pos = new int[] { 1, 2, 3 };
+        else if (player.rewardNum == 4) pos = new int[] { 0, 1, 3, 4 };
+        else if (player.rewardNum == 5) pos = new int[] { 0, 1, 2, 3, 4 };
+        StartCoroutine("GoEquipAlignment",pos);
     }
     private void SetOriginOrder()
     {
@@ -278,12 +333,12 @@ public class CardManager : MonoBehaviour
         for (int i = 0; i < cardNum; i++)
         {
             myCards[i].originPRS = originCardPRSs[i];
-            myCards[i].MoveTransform(myCards[i].originPRS, true, 0.7f);
+            myCards[i].moveTransform(myCards[i].originPRS, true, 0.7f);
             yield return new WaitForSeconds(waitTime);
         }
         yield return new WaitForSeconds(1f);
         
-        if (changeNum<=0)
+        if (player.curchangeNum <= 0)
             SetECardState(1);
         else 
             SetECardState(2);
@@ -293,7 +348,7 @@ public class CardManager : MonoBehaviour
         for (int i = 0; i < pos.Length; i++)
         {
             myEnemys[i].originPRS = PositionPRS[pos[i]];
-            myEnemys[i].MoveTransform(myEnemys[i].originPRS, true, 0.7f);
+            myEnemys[i].moveTransform(myEnemys[i].originPRS, true, 0.7f);
         }
         yield return null;
 
@@ -309,11 +364,11 @@ public class CardManager : MonoBehaviour
         yield return null;
         
     }
-    private IEnumerator GoEquipAlignment()
+    private IEnumerator GoEquipAlignment(int[] pos)
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < pos.Length; i++)
         {
-            myEquips[i].originPRS = PositionPRS[i];
+            myEquips[i].originPRS = PositionPRS[pos[i]];
             myEquips[i].MoveTransform(myEquips[i].originPRS, true, 0.7f);
         }
         yield return null;
@@ -347,7 +402,7 @@ public class CardManager : MonoBehaviour
         int max = roads[0];
         for (int i = 0; i < 3; i++)
         {
-            if (roads[i + 1] > roads[i]) max = roads[i + 1];
+            if (roads[i + 1] > max) max = roads[i + 1];
         }
         List<int> tmp = new List<int>();
         for (int i = 0; i < 4; i++)
@@ -384,7 +439,7 @@ public class CardManager : MonoBehaviour
         string set="";
         for (int i = 0; i < cardNum; i++)
         {
-            tmp = myCards[i].GetCard();
+            tmp = myCards[i].getCard();
             if (tmp.shape == "spade") shape[0]++;
             else if (tmp.shape == "diamond") shape[1]++;
             else if (tmp.shape == "heart") shape[2]++;
@@ -399,7 +454,7 @@ public class CardManager : MonoBehaviour
         Array.Reverse(shape);
         if (newValue[0] == 4)
         {
-            set = "Foker";
+            set = "Foker - 4마리 10배 데미지";
             damage = player.GetATK() * 10;
             textCardSet.text = set;
             maxSelect = 4;
@@ -408,8 +463,8 @@ public class CardManager : MonoBehaviour
         }
         if (newValue[0] == 3 && (newValue[1] ==3 || newValue[1] == 2))
         {
-            set = "Full House";
-            damage = player.GetATK() * 8;
+            set = "Full House - 5마리 6배 데미지";
+            damage = player.GetATK() * 6;
             textCardSet.text = set;
             maxSelect = 5;
             resetSelect();
@@ -485,17 +540,17 @@ public class CardManager : MonoBehaviour
     private void EnemyAlignment(Enemy target, PRS originCardPRS)
     {
         target.originPRS = originCardPRS;
-        target.MoveTransform(target.originPRS, true, 0.7f);
+        target.moveTransform(target.originPRS, true, 0.7f);
     }
     void EnlargeCard(bool isEnlarge, Card card)
     {
         if (isEnlarge)
         {
             Vector3 enlargePos = new Vector3(card.originPRS.pos.x, -3f, -10f);
-            card.MoveTransform(new PRS(enlargePos, Utils.QI, Vector3.one * 0.5f), false);
+            card.moveTransform(new PRS(enlargePos, Utils.QI, Vector3.one * 0.5f), false);
         }
         else
-            card.MoveTransform(card.originPRS, false);
+            card.moveTransform(card.originPRS, false);
 
         card.GetComponent<Order>().SetMostFrontOrder(isEnlarge);
     }
@@ -504,10 +559,10 @@ public class CardManager : MonoBehaviour
     {
         if(!onMyCardArea)
         {
-            selectCard.MoveTransform(new PRS(Utils.MousePos, Utils.QI, selectCard.originPRS.scale), false);
+            selectCard.moveTransform(new PRS(Utils.MousePos, Utils.QI, selectCard.originPRS.scale), false);
         } else
         {
-            selectCard.MoveTransform(new PRS(Utils.MousePos, Utils.QI, Vector3.one * 0.5f), false);
+            selectCard.moveTransform(new PRS(Utils.MousePos, Utils.QI, Vector3.one * 0.5f), false);
         }
     }
     void DetectCardArea()
@@ -532,14 +587,14 @@ public class CardManager : MonoBehaviour
             for(int i=0; i< selectedEnemysNum;i++)
             {
                 selectedEnemys[i].offSelect();
-                if(selectedEnemys[i].TakeDamage(damage)) numEnemy--;
+                if(selectedEnemys[i].takeDamage(damage)) numEnemy--;
             }
             selectedEnemys.Clear();
             cardBuffer.Clear();
 
             for (int i = 0; i < myCards.Count; i++)
             {
-                myCards[i].DieCard();
+                myCards[i].dieCard();
             }
             numSelect = 0;
             myCards.Clear();
@@ -561,10 +616,10 @@ public class CardManager : MonoBehaviour
                 yield return new WaitForSeconds(0.8f);
                 if (player.GetHP() > 0)
                 {
-                    changeNum = fixedChangeNum;
-                    textCardChange.text = changeNum + "/" + changeNum;
+                    player.resetChange();
                     SetupBuffer(cardBuffer, cardList.cardItems);
                     SetCard();
+                    player.resetChange();
                     GetCardDamage();
                     TurnEndButton.SetActive(true);
                 }
@@ -588,7 +643,7 @@ public class CardManager : MonoBehaviour
         {
             if (myEnemys[i] != null && myEnemys[i].getHP()>0)
             {
-                player.TakeHP(myEnemys[i].Attack());
+                player.TakeHP(myEnemys[i].attack());
                  
             }
         }
@@ -654,7 +709,7 @@ public class CardManager : MonoBehaviour
     {
         e.offBack();
     }
-    public void EnemyMouseDown(Enemy e)
+    public void EnemyMouseUp(Enemy e)
     {
         
         if (e.stateSelect())
@@ -723,7 +778,7 @@ public class CardManager : MonoBehaviour
         }
         else if (option == 2)   //상자
         {
-            StartCoroutine(GameManager.Inst.StartBattle(1));
+            StartCoroutine(GameManager.Inst.SelectEquipment(difficulty));
         } else if (option == 3) //이벤트
         {
             StartCoroutine(GameManager.Inst.StartBattle(1));
@@ -740,16 +795,22 @@ public class CardManager : MonoBehaviour
         {
             myEquips[i].DieEquip();
         }
-        equipBuffer.Clear();
+        commonBuffer.Clear();
+        rareBuffer.Clear();
+        epicBuffer.Clear();
+        legendBuffer.Clear();
         myEquips.Clear();
+        StartCoroutine(GameManager.Inst.SelectRoad());
     }
 
     #endregion
+
     #region MyReward
 
     public void RewardMouseDown(int rewardCard)
     {
         GameOverPanel.SetActive(false);
+        GameRewardPanel.SetActive(false);
         myEnemys.Clear();
         if(rewardCard == 0)
         {
@@ -762,4 +823,16 @@ public class CardManager : MonoBehaviour
     }
 
     #endregion
+
+    //함수들
+    public static void Shuffle<T>(List<T> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            int rand = Random.Range(i, list.Count);
+            T tmp = list[i];
+            list[i] = list[rand];
+            list[rand] = tmp;
+        }
+    }
 }
