@@ -37,6 +37,8 @@ public class CardManager : MonoBehaviour
     [SerializeField] GameObject equipPrefab;
     [SerializeField] List<Equipment> myEquips;
 
+    [SerializeField] Transform[] itemPoint = new Transform[4];
+
     [SerializeField] TextMeshPro textCardSet;
     [SerializeField] TextMeshPro textCardChange;
 
@@ -166,10 +168,12 @@ public class CardManager : MonoBehaviour
             SetECardState(2);
             RoadButton.SetActive(true);
         });
-        
+    }
+    public IEnumerator OpenStore(int num)
+    {
 
 
-
+        yield return null;
     }
     public IEnumerator SpawnEnemys(List<EnemyItem> items)
     {
@@ -649,10 +653,6 @@ public class CardManager : MonoBehaviour
         }
         
         yield return new WaitForSeconds(1.0f);
-    }
-    public void  OnTurnStarted()
-    {
-
     }
     
     #region MyCard

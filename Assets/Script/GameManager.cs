@@ -11,10 +11,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Inst { get; private set; }
     void Awake() => Inst = this;
     [SerializeField] GameObject cardInfo;
-    [SerializeField] GameObject cardChange;
     [SerializeField] GameObject turnEnd;
     [SerializeField] GameObject upTitle;
-    [SerializeField] GameObject hp;
 
     [SerializeField] SpriteRenderer background;
     [SerializeField] List<Sprite> BGList;
@@ -41,16 +39,12 @@ public class GameManager : MonoBehaviour
     void OnActive()
     {
         cardInfo.SetActive(true);
-        cardChange.SetActive(true);
         turnEnd.SetActive(true);
-        hp.SetActive(true);
     }
     void OffActive()
     {
         cardInfo.SetActive(false);
-        cardChange.SetActive(false);
         turnEnd.SetActive(false);
-        hp.SetActive(false);
     }
     public IEnumerator ChangeBackground(int i)
     {
@@ -73,6 +67,7 @@ public class GameManager : MonoBehaviour
         OnActive();
         stage++;
         int rand;
+        enemys.Clear();
         if (floor ==1)
         {
             rand = Random.Range(1,4);       //1부터 3까지
@@ -197,6 +192,7 @@ public class GameManager : MonoBehaviour
     }
     public IEnumerator SelectEquipment(int num)
     {
+        stage++;
         OffActive();
         StartCoroutine(CardManager.Inst.SpawnEquipment(num));
         yield return null;
@@ -204,7 +200,16 @@ public class GameManager : MonoBehaviour
     public IEnumerator SelectRoad()
     {
         OffActive();
-        StartCoroutine(CardManager.Inst.SelecetRoads());
+        if(stage%5 == 4)
+        {
+            stage++;
+            StartCoroutine(ChangeBackground(2));
+            StartCoroutine(CardManager.Inst.OpenStore(stage/5));
+        } else
+        {
+            StartCoroutine(CardManager.Inst.SelecetRoads());
+        }
+        
         yield return null;
     }
 

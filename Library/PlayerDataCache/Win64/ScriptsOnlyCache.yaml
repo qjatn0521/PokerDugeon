@@ -11,7 +11,6 @@ ScriptsOnlyBuild:
     - GameManager
     - GameOver
     - GameReward
-    - NotificationPanel
     - Order
     - Player
     - Road
@@ -153,19 +152,19 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 5126}
     - Class: 114
-      Script: {instanceID: 6052}
+      Script: {instanceID: 6054}
     - Class: 114
-      Script: {instanceID: 6804}
+      Script: {instanceID: 6806}
     - Class: 114
-      Script: {instanceID: 7010}
+      Script: {instanceID: 7012}
     - Class: 114
-      Script: {instanceID: 7036}
+      Script: {instanceID: 7038}
     - Class: 114
-      Script: {instanceID: 7250}
+      Script: {instanceID: 7252}
     - Class: 114
-      Script: {instanceID: 7430}
+      Script: {instanceID: 7432}
     - Class: 114
-      Script: {instanceID: 8802}
+      Script: {instanceID: 8804}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -238,27 +237,25 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 4612}
     - Class: 114
-      Script: {instanceID: 5848}
+      Script: {instanceID: 5742}
     - Class: 114
-      Script: {instanceID: 5900}
+      Script: {instanceID: 5850}
     - Class: 114
-      Script: {instanceID: 6052}
+      Script: {instanceID: 5902}
     - Class: 114
-      Script: {instanceID: 6804}
+      Script: {instanceID: 6054}
     - Class: 114
-      Script: {instanceID: 7010}
+      Script: {instanceID: 6116}
     - Class: 114
-      Script: {instanceID: 7250}
+      Script: {instanceID: 6806}
     - Class: 114
-      Script: {instanceID: 7430}
+      Script: {instanceID: 7012}
     - Class: 114
-      Script: {instanceID: 8172}
+      Script: {instanceID: 7252}
     - Class: 114
-      Script: {instanceID: 9300}
+      Script: {instanceID: 7432}
     - Class: 114
-      Script: {instanceID: 25916}
-    - Class: 114
-      Script: {instanceID: 36144}
+      Script: {instanceID: 9302}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -550,7 +547,7 @@ ScriptsOnlyBuild:
     className: VertexShakeA
   - hash:
       serializedVersion: 2
-      Hash: 64112c2ce695f0ce2eb6b799ce1caa7a
+      Hash: 09f05119e03ba830ccc39ec4fe3c0eee
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: CardManager
@@ -604,7 +601,7 @@ ScriptsOnlyBuild:
     className: UnityOnMouseDragMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 688460583a29e7f1ba4ddf156b162450
+      Hash: c50d057f91625140b6d5b9d7d5a7e5cc
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Enemy
@@ -712,7 +709,7 @@ ScriptsOnlyBuild:
     className: UnityOnCollisionExit2DMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 05a675775e8cd7f123e275b926dbac8e
+      Hash: 463b4d0add4afea6892dc2aa143145c4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameManager
@@ -772,7 +769,7 @@ ScriptsOnlyBuild:
     className: SpriteShapeGeometryCache
   - hash:
       serializedVersion: 2
-      Hash: 4cf69588e28685310465c08f4fff8dff
+      Hash: 7f45ff24da969ee232ffcfb8c1a0415d
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -952,6 +949,12 @@ ScriptsOnlyBuild:
     className: UnityOnEndDragMessageListener
   - hash:
       serializedVersion: 2
+      Hash: 2ecb2aad2125882a6998107071d6d416
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GameReward
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Unity.VisualScripting.Core.dll
     namespaceName: Unity.VisualScripting
@@ -1000,7 +1003,7 @@ ScriptsOnlyBuild:
     className: CCDSolver2D
   - hash:
       serializedVersion: 2
-      Hash: 769cdc15321e515cdbd104e3d0d5abb3
+      Hash: af04959b69998e65f07c79ada22132f6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Equipment
@@ -1044,6 +1047,12 @@ ScriptsOnlyBuild:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: GameOver
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
     namespaceName: TMPro
     className: TMP_DigitValidator
   - hash:
@@ -1070,12 +1079,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.2D.Animation.Runtime.dll
     namespaceName: UnityEngine.U2D.Animation
     className: SpriteSkinUpdateHelper
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: DialogSystem
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -1450,7 +1453,7 @@ ScriptsOnlyBuild:
     className: UnityOnMouseUpMessageListener
   - hash:
       serializedVersion: 2
-      Hash: 01b3e115a44b8adacbe882c7f9f89ddd
+      Hash: 62728213df7b2906f75bb06ca15f4fa3
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: EquipmentList
@@ -1520,20 +1523,8 @@ ScriptsOnlyBuild:
     assemblyName: Unity.VisualScripting.Core.dll
     namespaceName: Unity.VisualScripting
     className: UnityOnSliderValueChangedMessageListener
-  - hash:
-      serializedVersion: 2
-      Hash: 2ecb2aad2125882a6998107071d6d416
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: GameReward
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: GameOver
   platform: 19
   scenePathNames:
   - Assets/Scenes/PreScene.unity
   - Assets/Scenes/SampleScene.unity
-  playerPath: "C:/Users/qjatn/OneDrive/\uBC14\uD0D5 \uD654\uBA74/PokerDungeon.exe"
+  playerPath: C:/Users/qjatn/OneDrive/dsadasd/PokerDungeon.exe
