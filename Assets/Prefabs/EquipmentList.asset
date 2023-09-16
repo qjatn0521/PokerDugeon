@@ -19,36 +19,42 @@ MonoBehaviour:
     plusATK: 0
     plusDEF: 3
     option: 3
+    id: 1
   - image: {fileID: 21300000, guid: 24f0dc93fb7f95b4683eccdb641474cb, type: 3}
     image2: {fileID: 21300000, guid: 6588223794cda694aad00affa4adeeba, type: 3}
     grade: 0
     plusATK: 1
     plusDEF: 1
     option: 4
+    id: 2
   - image: {fileID: 21300000, guid: f5d64d90d47a11a47826ae5e4b642b17, type: 3}
     image2: {fileID: 21300000, guid: 4a36bcace9af2eb44a3787397fa42592, type: 3}
     grade: 0
     plusATK: 2
     plusDEF: 2
     option: 2
+    id: 3
   - image: {fileID: 21300000, guid: 52d8e442e2d61844c93fda4b4c045164, type: 3}
     image2: {fileID: 21300000, guid: e5420cbfcc5f40d4aac8fb4fd722ce03, type: 3}
     grade: 0
     plusATK: 3
     plusDEF: 0
     option: 0
+    id: 4
   - image: {fileID: 21300000, guid: 82356da0d4f00794e9c7ee8ca028aefd, type: 3}
     image2: {fileID: 21300000, guid: dcd736c0caf23be48823d1f2088c322b, type: 3}
     grade: 0
     plusATK: 1
     plusDEF: 3
     option: 2
+    id: 5
   - image: {fileID: 21300000, guid: 9c0fc117e1396ac4e904cb2e0034dc41, type: 3}
     image2: {fileID: 21300000, guid: bc5adb2da849e6d4a84a8cff88e54473, type: 3}
     grade: 0
     plusATK: 4
     plusDEF: 0
     option: 0
+    id: 6
   rareItems:
   - image: {fileID: 21300000, guid: c785622686c0fac40be9da9156819bde, type: 3}
     image2: {fileID: 21300000, guid: da6922fe518037d49875e8e5a89fdee1, type: 3}
@@ -56,30 +62,35 @@ MonoBehaviour:
     plusATK: 0
     plusDEF: 8
     option: 3
+    id: 101
   - image: {fileID: 21300000, guid: b88e34573564b264bbf987e206b89b7c, type: 3}
     image2: {fileID: 21300000, guid: 2d0ffbb9595349d44b31f52d8acb07de, type: 3}
     grade: 1
     plusATK: 5
     plusDEF: 2
     option: 2
+    id: 102
   - image: {fileID: 21300000, guid: 8cc84be226665f14bb114b53368ec033, type: 3}
     image2: {fileID: 21300000, guid: 98488971b86f8bd4baae125905605cec, type: 3}
     grade: 1
     plusATK: 3
     plusDEF: 5
     option: 2
+    id: 103
   - image: {fileID: 21300000, guid: 1f7693e8a58772b4192d8b211715f01f, type: 3}
     image2: {fileID: 21300000, guid: 1dd21303767389b44bb6b910d842485b, type: 3}
     grade: 1
     plusATK: 3
     plusDEF: 3
     option: 3
+    id: 104
   - image: {fileID: 21300000, guid: 4dc2e3b047094f84aa50eeb91f9606e4, type: 3}
     image2: {fileID: 21300000, guid: 730dfb2cc9512c04e8b46ba2d11f35cf, type: 3}
     grade: 1
     plusATK: 2
     plusDEF: 4
     option: 1
+    id: 105
   epicItems:
   - image: {fileID: 21300000, guid: e99ac8bf7df862e459f97f52da96a03a, type: 3}
     image2: {fileID: 21300000, guid: a62a88e1e22805a49b3080f97f6c01f8, type: 3}
@@ -87,30 +98,35 @@ MonoBehaviour:
     plusATK: 10
     plusDEF: 8
     option: 2
+    id: 201
   - image: {fileID: 21300000, guid: 2de206f7d9c06bb47a8eea2ff806d768, type: 3}
     image2: {fileID: 21300000, guid: 398922bb21b944d45a6c0742b7f6a380, type: 3}
     grade: 2
     plusATK: 3
     plusDEF: 10
     option: 1
+    id: 202
   - image: {fileID: 21300000, guid: 1c5b50fc34f1ed6478afc7fba4c2502a, type: 3}
     image2: {fileID: 21300000, guid: fe0c9e950e2d11744a24e39d0db5a055, type: 3}
     grade: 2
     plusATK: 10
     plusDEF: 3
     option: 2
+    id: 203
   - image: {fileID: 21300000, guid: 1ef57157335eb9a419b0441702273282, type: 3}
     image2: {fileID: 21300000, guid: 85a71572654d38244b44b645d1380658, type: 3}
     grade: 2
     plusATK: 5
     plusDEF: 7
     option: 1
+    id: 204
   - image: {fileID: 21300000, guid: f2d67b457c4e8da4d9b93a76b7b987d5, type: 3}
     image2: {fileID: 21300000, guid: fa8fa7901d798c044ad3604fc47d8771, type: 3}
     grade: 2
     plusATK: 4
     plusDEF: 8
     option: 3
+    id: 205
   legendItems:
   - image: {fileID: 21300000, guid: 90675fb9bf4a4f746a2486a640e71b37, type: 3}
     image2: {fileID: 21300000, guid: fe0c9e950e2d11744a24e39d0db5a055, type: 3}
@@ -118,27 +134,32 @@ MonoBehaviour:
     plusATK: 15
     plusDEF: 20
     option: 2
+    id: 301
   - image: {fileID: 21300000, guid: 0e5f9408ad196d144b5d6ded66367c8c, type: 3}
     image2: {fileID: 21300000, guid: 08c2de0e950a60640bb6186e9ed85bba, type: 3}
     grade: 3
     plusATK: 0
     plusDEF: 5
     option: 1
+    id: 302
   - image: {fileID: 21300000, guid: b13ff88d791b9b444ac935a644df25db, type: 3}
     image2: {fileID: 21300000, guid: 3dcf9226513554847ad0ef8e6310a881, type: 3}
     grade: 3
     plusATK: 35
     plusDEF: 5
     option: 0
+    id: 303
   - image: {fileID: 21300000, guid: d02b360f4022efd4480d303974260e93, type: 3}
     image2: {fileID: 21300000, guid: 884b8544d1d7db84e9dedbb0b4f0c9cc, type: 3}
     grade: 3
     plusATK: 13
     plusDEF: 15
     option: 2
+    id: 304
   - image: {fileID: 21300000, guid: 52e50cf75bb96a74da4ed8a84d6428ae, type: 3}
     image2: {fileID: 21300000, guid: c59ed8e036e91be44a306b392e9683e5, type: 3}
     grade: 3
     plusATK: 11
     plusDEF: 7
     option: 3
+    id: 305
