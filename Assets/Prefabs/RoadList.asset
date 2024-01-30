@@ -16,16 +16,16 @@ MonoBehaviour:
   - sprite: {fileID: 21300000, guid: d33ccba7870410f4ba6664f1bba2fec2, type: 3}
     option: 0
     per: 1
-    plusPer: 0
+    plusPer: 1
   - sprite: {fileID: 21300000, guid: 352807b8f7affa6459e30538cb9aa3c7, type: 3}
     option: 1
-    per: 10
-    plusPer: 1
+    per: 1
+    plusPer: 0
   - sprite: {fileID: 21300000, guid: a8d9fde5db77c8f4daaf47bd8e0f089a, type: 3}
     option: 2
-    per: 5
+    per: 1
     plusPer: 0
-  - sprite: {fileID: 21300000, guid: 2af9c3da0c664c044b1990784aa480fc, type: 3}
+  - sprite: {fileID: 21300000, guid: efc15b8e22a009e40a4f961269d0d366, type: 3}
     option: 3
-    per: 5
+    per: 10
     plusPer: 0

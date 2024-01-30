@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
 
         }
         StartCoroutine(CardManager.Inst.SpawnEnemys(enemys));
-        StartCoroutine(CardManager.Inst.StartBattleCo());
+        StartCoroutine(CardManager.Inst.StartBattleCo(0));
         yield return null;
     }
     public IEnumerator SelectEquipment(int num)
@@ -204,6 +204,23 @@ public class GameManager : MonoBehaviour
             StartCoroutine(CardManager.Inst.SelecetRoads());
         }
         
+        yield return null;
+    }
+    public IEnumerator EnterShop(int diff)
+    {
+        StartCoroutine(ChangeBackground(2));
+        StartCoroutine(CardManager.Inst.SpawnStoreItems(stage,diff));
+        yield return null;
+    }
+    public IEnumerator BossBattle()
+    {
+        OnActiveBattle();
+        EnemyItem tmp;
+        enemys.Clear();
+        tmp = enemyList.enemyItems[6];
+        enemys.Add(tmp);
+        StartCoroutine(CardManager.Inst.SpawnEnemys(enemys));
+        StartCoroutine(CardManager.Inst.StartBattleCo(1));
         yield return null;
     }
 

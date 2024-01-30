@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
 
     [SerializeField] TextMeshPro textChange;
     [SerializeField] SpriteRenderer[] changes = new SpriteRenderer[5];
+    [SerializeField] GameObject ItemChangeInfo;
     int maxHP = 200;
     int ATK = 10;
     int DEF = 10;
@@ -35,6 +36,8 @@ public class Player : MonoBehaviour
     [SerializeField] SpriteRenderer[] equipment = new SpriteRenderer[10];
     //0 : weapon, 1 : helmet, 2 : shoulder, 3 : shoes, 4 : gloves, 5 : cape, 6: ring, 7: necklace, 8:bracelet, 9 : earrings
     Equipment[] equip = new Equipment[10];
+    Equipment changeEquip;
+    ShopItem tmpItem;
     void Start()
     {
         for (int i = 0; i < 10; i++)
@@ -51,7 +54,26 @@ public class Player : MonoBehaviour
     public int GetATK() { return ATK+ plusATK; } 
     public int GetDEF() { return DEF+plusDEF; }
     public int GetHP() { return curHP; }
-    public void GetCoin(int theCoin) { 
+    public int GetMaxHP() { return maxHP; }
+    public int GetCoin() { return coin; }
+    public void PlusATK(int n)
+    {
+        plusATK += n;
+        textATK.text = ATK + plusATK + "";
+    }
+    public void PlusDEF(int n)
+    {
+        plusDEF += n;
+        textShield.text = DEF + plusDEF + "";
+    }
+    public void PlusHP(int n)
+    {
+        maxHP += n;
+        curHP += n;
+        textCurHP.text = curHP + "";
+        textMaxHP.text = "/" + maxHP;
+    }
+    public void PlusCoin(int theCoin) { 
         coin += theCoin;
         textMoney.text = coin+" coin";
     }
@@ -62,6 +84,12 @@ public class Player : MonoBehaviour
         Vector3 targetPosition = Vector3.Lerp(noHp.position, fullHp.position, hpRatio);
         hpBar.transform.DOMove(targetPosition, 0.5f);
         StartCoroutine("FadeInBackground");
+    }
+    public void Heal(int n)
+    {
+        curHP += n;
+        if (maxHP < curHP) curHP = maxHP;
+        textCurHP.text = curHP + "";
     }
     public IEnumerator FadeInBackground()
     {
@@ -77,18 +105,49 @@ public class Player : MonoBehaviour
         }
         yield return null;
     }
-    public void GetEquip(Equipment e)
+    public bool GetEquip(Equipment e, ShopItem s)
     {
-        equip[e.getOption()] = e;
-        equipment[e.getOption()].sprite = e.getSprite();
-        plusATK += e.getPlusATK();
-        plusDEF += e.getPlusDEF();
+        if (equip[e.getOption()] is null)
+        {
+            equip[e.getOption()] = e;
+            equipment[e.getOption()].sprite = e.getSprite();
+            plusATK += e.getPlusATK();
+            plusDEF += e.getPlusDEF();
+            textATK.text = ATK + plusATK + "";
+            textShield.text = DEF + plusDEF + "";
+            if (curHP > maxHP)
+            {
+                curHP = maxHP;
+            }
+            return true;
+        } else
+        {
+            tmpItem = s;
+            changeEquip = e;
+            ItemChangeInfo.SetActive(true);
+            return false;
+        }
+    }
+    public void ResetEquip(Equipment e)
+    {
+        plusATK -= e.getPlusATK();
+        plusDEF -= e.getPlusDEF();
         textATK.text = ATK + plusATK + "";
         textShield.text = DEF + plusDEF + "";
-        if (curHP > maxHP)
-        {
-            curHP = maxHP;
-        }
+    }
+    public void EquipChangeYes()
+    {
+        ItemChangeInfo.SetActive(false);
+        ResetEquip(equip[changeEquip.getOption()]);
+        equip[changeEquip.getOption()] = null;
+        GetEquip(changeEquip, null);
+        PlusCoin(-1*tmpItem.GetCoin());
+        tmpItem.offActive();
+        StartCoroutine(CardManager.Inst.removeItem(changeEquip.getId()));
+    }
+    public void EquipChangeNo()
+    {
+        ItemChangeInfo.SetActive(false);
     }
     public void resetChange()
     {

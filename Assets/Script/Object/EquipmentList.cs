@@ -12,6 +12,7 @@ public class EquipmentItem
     public int plusDEF;
     public int option;
     public int id;
+    public int sale;
 }
 [CreateAssetMenu(fileName = "EquipmentList", menuName = "Scriptable Object/EquipmentList")]
 public class EquipmentList : ScriptableObject

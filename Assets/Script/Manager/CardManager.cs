@@ -60,14 +60,24 @@ public class CardManager : MonoBehaviour
     List<EquipmentItem> epicBuffer = new List<EquipmentItem>();
     List<EquipmentItem> legendBuffer = new List<EquipmentItem>();
 
+    //상점 아이템
+    [SerializeField] GameObject storeItemPrefab;
+    [SerializeField] Transform[] itemPositions = new Transform[5];
+    [SerializeField] Transform[] potionPositions = new Transform[5];
+
 
     [SerializeField] GameObject RoadButton;
 
     [SerializeField] GameObject GameRewardPanel;
     [SerializeField] GameObject GameOverPanel;
+    [SerializeField] TextMeshPro GameOverPanelText;
     [SerializeField] TextMeshPro GameRewardCointext;
 
     [SerializeField] GameObject TurnEndButton;
+    [SerializeField] GameObject ShopEndButton;
+    [SerializeField] TextMeshProUGUI ShopInfo;
+    List<ShopItem> ShopItems = new List<ShopItem>();
+
     Card selectCard;
     bool isMyCardDrag= false;
     bool onMyCardArea;
@@ -81,13 +91,16 @@ public class CardManager : MonoBehaviour
     enum ECardState { Nothing, CanMouseOver, CanMouseDrag}      //0 아무것도 1 손 올리기 2 드래그
     int[] roads = new int[4];
 
+    int boss = 0;
+
     void Start()
     {
         player.resetChange();
         roadList.roadItems[0].Init(0, 1, 0);
-        roadList.roadItems[1].Init(1, 10, 0);
-        roadList.roadItems[2].Init(2, 5, 0);
-        roadList.roadItems[3].Init(3, 5, 0);
+        roadList.roadItems[1].Init(1, 5, 0);
+        roadList.roadItems[2].Init(2, 1, 0);
+        roadList.roadItems[3].Init(3, 1, 0);
+        player.PlusCoin(300);
         for (int i=0;i<5;i++)
         {
             PRS tmpPRS = new PRS(myEnemyPosition[i].position, Quaternion.identity, Vector3.one);
@@ -134,8 +147,9 @@ public class CardManager : MonoBehaviour
         StartCoroutine("GoCardAlignment",0f);
         GetCardDamage();
     }
-    public IEnumerator StartBattleCo()
+    public IEnumerator StartBattleCo(int boss)
     {
+        if (boss == 1) this.boss = boss;
         player.resetChange();
         SetECardState(0);       //드래그 가능한 상태
         SetupBuffer(cardBuffer,cardList.cardItems);      
@@ -175,11 +189,6 @@ public class CardManager : MonoBehaviour
             RoadButton.SetActive(true);
         });
     }
-    public IEnumerator OpenStore(int num)
-    {
-
-        yield return null;
-    }
     public IEnumerator SpawnEnemys(List<EnemyItem> items)
     {
         numEnemy = items.Count;
@@ -194,6 +203,11 @@ public class CardManager : MonoBehaviour
     public IEnumerator SpawnEquipment(int num)
     {
         SetEquipment(num);
+        yield return null;
+    }
+    public IEnumerator SpawnStoreItems(int floor, int diff)
+    {
+        SetStoreItems(floor,diff);
         yield return null;
     }
     void Update()
@@ -324,6 +338,114 @@ public class CardManager : MonoBehaviour
         else if (player.rewardNum == 4) pos = new int[] { 0, 1, 3, 4 };
         else if (player.rewardNum == 5) pos = new int[] { 0, 1, 2, 3, 4 };
         StartCoroutine("GoEquipAlignment",pos);
+    }
+    private void SetStoreItems(int stage,int diff)
+    {
+        int commonPro = 70;
+        int rarePro = 90;
+        int epicPro = 100;
+        int legendPro = 101;
+        if (stage == 2)
+        {
+            commonPro = 40;
+            rarePro = 70;
+            epicPro = 90;
+            legendPro = 100;
+        }
+        else if (stage == 3)
+        {
+            commonPro = 10;
+            rarePro = 40;
+            epicPro = 60;
+            legendPro = 100;
+        }
+        int commonNum = 0;
+        int rareNum = 0;
+        int epicNum = 0;
+        int legendNum = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            int rand = Random.Range(1, 101);
+            if (rand <= commonPro)
+            {
+                commonNum++;
+            }
+            else if (rand <= rarePro)
+            {
+                rareNum++;
+            }
+            else if (rand <= epicPro)
+            {
+                epicNum++;
+            }
+            else if (rand <= legendPro)
+            {
+                legendNum++;
+            }
+        }
+        List<EquipmentItem> combinedList = new List<EquipmentItem>();
+
+        combinedList.AddRange(PopList(commonNum, commonBuffer));
+        combinedList.AddRange(PopList(rareNum, rareBuffer));
+        combinedList.AddRange(PopList(epicNum, epicBuffer));
+        combinedList.AddRange(PopList(legendNum, legendBuffer));
+        int n = Random.Range(0, 7);
+        if (n < 3) stage -= n;
+        if (n == 0) stage--;
+        Shuffle(combinedList);
+        if (stage < 0) stage = 0;
+        for(int i = 0; i< stage+1;i++)
+        {
+            float t = Mathf.Pow(Random.value,4); // 낮은 숫자에 편향되도록 랜덤 값을 제곱
+            int rand = Mathf.RoundToInt(Mathf.Lerp(5*diff, 20*diff, t));
+            combinedList[i].sale = rand;
+        }
+        for (int i = stage+1;i  < 4; i++)
+        {
+            combinedList[i].sale = 0;
+        }
+        /*
+        int[] arr = new int[101];
+        for( int i=0;i<10000000;i++)
+        {
+            float t = Mathf.Pow(Random.value, 3); // 낮은 숫자에 편향되도록 랜덤 값을 제곱
+            int rand = Mathf.RoundToInt(Mathf.Lerp(5 * diff, 20 * diff, t));
+            arr[rand]++;
+        }
+        for (int i = 5*diff; i <= 20*diff; i++)
+        {
+            print("Element " + i + ": " + arr[i]);
+        }*/
+        Shuffle(combinedList);
+
+        for (int i = 0; i < 4; i++)
+        {
+            var equipObject = Instantiate(storeItemPrefab, itemPositions[i].position, Utils.QI);
+            var equip = equipObject.GetComponent<ShopItem>();
+            ShopItems.Add(equip);
+            equip.Setup(combinedList[i]);
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            var equipObject = Instantiate(storeItemPrefab, potionPositions[i].position, Utils.QI);
+            var equip = equipObject.GetComponent<ShopItem>();
+            ShopItems.Add(equip);
+            equip.Setup(i);
+            float t = Mathf.Pow(Random.value, 4); // 낮은 숫자에 편향되도록 랜덤 값을 제곱
+            int rand = Mathf.RoundToInt(Mathf.Lerp(5 * diff, 20 * diff, t));
+            if (n==1)
+            {
+                if(i==3) equip.SetSale(rand);
+            } else if(n==2)
+            {
+                if (i == 3 || i == 4) equip.SetSale(rand);
+            } else if(n==0)
+            {
+                if (i==4) equip.SetSale(rand);
+            }
+        }
+        ShopEndButton.SetActive(true);
     }
     private void SetOriginOrder()
     {
@@ -580,14 +702,23 @@ public class CardManager : MonoBehaviour
     public void MyTurnEnd()
     {
          StartCoroutine("AttakTurn");
-       
-        
+        TurnEndButton.SetActive(false);
+    }
+    public void MyShopEnd()
+    {
+        for (int i = 0; i < ShopItems.Count; i++)
+        {
+            ShopItems[i].DieEquip();            
+        }
+        ShopItems.Clear();
+        StartCoroutine(GameManager.Inst.ChangeBackground(1));
+        StartCoroutine(GameManager.Inst.SelectRoad());
+        ShopEndButton.SetActive(false);
     }
     public IEnumerator AttakTurn()
     {
         if(maxSelect == numSelect || maxSelect > numEnemy)
         {
-            TurnEndButton.SetActive(false);
             SetECardState(0);
             int selectedEnemysNum = selectedEnemys.Count;
             for(int i=0; i< selectedEnemysNum;i++)
@@ -607,14 +738,22 @@ public class CardManager : MonoBehaviour
 
             if (numEnemy==0)
             {
-                GameRewardPanel.GetComponent<SpriteRenderer>().material.DOFade(0f, 0f);
-                GameRewardPanel.SetActive(true);
-                GameRewardPanel.GetComponent<SpriteRenderer>().material.DOFade(1f, 0.5f);
-                GameRewardCointext.text = "+"+coin+" coin";
-                player.GetCoin(coin);
-                coin = 0;
+                if (boss == 1)
+                {
+                    GameOverPanelText.text = "Game Clear!";
+                    GameOverPanel.GetComponent<SpriteRenderer>().material.DOFade(0f, 0f);
+                    GameOverPanel.SetActive(true);
+                    GameOverPanel.GetComponent<SpriteRenderer>().material.DOFade(1f, 0.5f);
+                } else
+                {
+                    GameRewardPanel.GetComponent<SpriteRenderer>().material.DOFade(0f, 0f);
+                    GameRewardPanel.SetActive(true);
+                    GameRewardPanel.GetComponent<SpriteRenderer>().material.DOFade(1f, 0.5f);
+                    GameRewardCointext.text = "+" + coin + " coin";
 
-                
+                    player.PlusCoin(coin);
+                    coin = 0;
+                }
             } else
             {
                 yield return new WaitForSeconds(0.3f);
@@ -771,19 +910,19 @@ public class CardManager : MonoBehaviour
         }
         if (option == 0)    //보스
         {
-            StartCoroutine(GameManager.Inst.StartBattle(1));
+            StartCoroutine(GameManager.Inst.BossBattle());
         }
         else if (option == 1)   //몬스터
         {
             StartCoroutine(GameManager.Inst.StartBattle(difficulty));
-            coin = difficulty * 10;
+            coin = difficulty * 20;
         }
         else if (option == 2)   //상자
         {
             StartCoroutine(GameManager.Inst.SelectEquipment(difficulty));
         } else if (option == 3) //이벤트
         {
-            StartCoroutine(GameManager.Inst.StartBattle(1));
+            StartCoroutine(GameManager.Inst.EnterShop(difficulty));
         }
 
         
@@ -792,23 +931,119 @@ public class CardManager : MonoBehaviour
     #region MyEquip
     public void EquipMouseDown(Equipment e)
     {
-        player.GetEquip(e);
+        player.GetEquip(e,null);
         for (int i = 0; i < myEquips.Count; i++)
         {
             myEquips[i].DieEquip();
         }
-        int selectId = e.getId();
-        if(selectId / 100==0)
+        removeItem(e.getId());
+
+        Shuffle(commonBuffer);
+        Shuffle(rareBuffer);
+        Shuffle(epicBuffer);
+        Shuffle(legendBuffer);
+        myEquips.Clear();
+        StartCoroutine(GameManager.Inst.SelectRoad());
+    }
+
+    #endregion
+
+    #region MyReward
+
+    public void RewardMouseDown(int rewardCard)
+    {
+        GameOverPanel.SetActive(false);
+        GameRewardPanel.SetActive(false);
+        myEnemys.Clear();
+        if(rewardCard == 0)
         {
-            for(int i=0;i<commonBuffer.Count;i++)
+            roadList.roadItems[3].plusPer++;
+        } else
+        {
+            roadList.roadItems[2].plusPer++;
+        }
+        StartCoroutine(GameManager.Inst.SelectRoad());
+    }
+
+    #endregion
+
+    #region Shop
+
+    public bool ShopMouseDown(ShopItem s)
+    {
+        if(s.GetCoin() <= player.GetCoin())
+        {
+            if (s.GetOption() == 0)
             {
-                if(selectId==commonBuffer[i].id)
+                player.PlusATK(s.GetPlus());
+            }
+            else if (s.GetOption() == 1)
+            {
+                player.PlusDEF(s.GetPlus());
+            }
+            else if (s.GetOption() == 2)
+            {
+                player.PlusHP(s.GetPlus());
+            }
+            else if (s.GetOption() == 3)
+            {
+                player.Heal(player.GetMaxHP() / 2);
+            }
+            else if (s.GetOption() == 4)
+            {
+                player.Heal(player.GetMaxHP() / 4);
+            }
+            else 
+            {
+                var equipObject = Instantiate(equipPrefab, enemySpawnPoint.position, Utils.QI);
+                var equip = equipObject.GetComponent<Equipment>();
+                equip.Setup(s.GetEquip());
+                removeItem(equip.getId());
+                bool change= player.GetEquip(equip,s);
+                Destroy(equipObject);
+                if (!change) return false;
+                
+               
+            }
+            player.PlusCoin(-1*s.GetCoin());
+            return true;
+        } else
+        {
+            ShopInfo.text = "Not Enough coin";
+        }
+        return false;
+        //StartCoroutine(GameManager.Inst.SelectRoad());
+    }
+
+    #endregion
+
+
+    //함수들
+    public static void Shuffle<T>(List<T> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            int rand = Random.Range(i, list.Count);
+            T tmp = list[i];
+            list[i] = list[rand];
+            list[rand] = tmp;
+        }
+    }
+
+    public IEnumerator removeItem(int selectId)
+    {
+        if (selectId / 100 == 0)
+        {
+            for (int i = 0; i < commonBuffer.Count; i++)
+            {
+                if (selectId == commonBuffer[i].id)
                 {
                     commonBuffer.Remove(commonBuffer[i]);
                     break;
                 }
             }
-        } else if(selectId / 100 == 1)
+        }
+        else if (selectId / 100 == 1)
         {
             for (int i = 0; i < rareBuffer.Count; i++)
             {
@@ -841,44 +1076,7 @@ public class CardManager : MonoBehaviour
                 }
             }
         }
-        Shuffle(commonBuffer);
-        Shuffle(rareBuffer);
-        Shuffle(epicBuffer);
-        Shuffle(legendBuffer);
-        myEquips.Clear();
-        StartCoroutine(GameManager.Inst.SelectRoad());
+        yield return null;
     }
-
-    #endregion
-
-    #region MyReward
-
-    public void RewardMouseDown(int rewardCard)
-    {
-        GameOverPanel.SetActive(false);
-        GameRewardPanel.SetActive(false);
-        myEnemys.Clear();
-        if(rewardCard == 0)
-        {
-            roadList.roadItems[3].plusPer++;
-        } else
-        {
-            roadList.roadItems[2].plusPer++;
-        }
-        StartCoroutine(GameManager.Inst.SelectRoad());
-    }
-
-    #endregion
-
-    //함수들
-    public static void Shuffle<T>(List<T> list)
-    {
-        for (int i = 0; i < list.Count; i++)
-        {
-            int rand = Random.Range(i, list.Count);
-            T tmp = list[i];
-            list[i] = list[rand];
-            list[rand] = tmp;
-        }
-    }
+    
 }
